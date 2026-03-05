@@ -3,88 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biya’s Vault | Secure Access</title>
+    <title>Biya’s Pro Vault | Secure Terminal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #4c0519; color: white; margin: 0; }
-        .pink-glow { text-shadow: 0 0 10px rgba(244, 114, 182, 0.5); }
+        .pink-glow { text-shadow: 0 0 15px rgba(244, 114, 182, 0.6); }
         .hidden { display: none !important; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(136, 19, 55, 0.2); rounded: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(244, 114, 182, 0.5); border-radius: 10px; }
     </style>
 </head>
-<body class="min-h-screen bg-rose-950 flex flex-col items-center justify-center p-4">
+<body class="min-h-screen bg-rose-950 flex flex-col items-center justify-center p-4 lg:p-8">
 
     <div id="login-view" class="flex flex-col items-center justify-center w-full max-w-sm">
         <div class="mb-8 text-center">
-            <div class="w-20 h-20 bg-pink-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-pink-500/30 border border-pink-400/50">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            <div class="w-20 h-20 bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-pink-500/40 border border-pink-400/50 relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="relative z-10"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
             </div>
-            <h1 class="text-3xl font-extrabold tracking-tight pink-glow">Biya’s Vault</h1>
-            <p class="text-pink-200/60 text-sm mt-2 font-medium">Enter PIN to Unlock</p>
+            <h1 class="text-4xl font-extrabold tracking-tight pink-glow mb-2">Biya’s Vault</h1>
+            <p class="text-pink-200/60 text-sm font-medium tracking-widest uppercase">Encrypted Terminal</p>
         </div>
 
-        <div class="flex gap-4 mb-10" id="pin-indicators">
-            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all"></div>
-            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all"></div>
-            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all"></div>
-            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all"></div>
+        <div class="flex gap-5 mb-10" id="pin-indicators">
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all duration-300"></div>
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all duration-300"></div>
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all duration-300"></div>
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all duration-300"></div>
         </div>
 
-        <div class="grid grid-cols-3 gap-4 w-full">
-            <button onclick="pressKey('1')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">1</button>
-            <button onclick="pressKey('2')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">2</button>
-            <button onclick="pressKey('3')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">3</button>
-            <button onclick="pressKey('4')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">4</button>
-            <button onclick="pressKey('5')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">5</button>
-            <button onclick="pressKey('6')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">6</button>
-            <button onclick="pressKey('7')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">7</button>
-            <button onclick="pressKey('8')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">8</button>
-            <button onclick="pressKey('9')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">9</button>
-            <button onclick="deleteKey()" class="h-16 rounded-2xl flex items-center justify-center text-pink-300 hover:text-white transition-all bg-rose-900/40">DEL</button>
-            <button onclick="pressKey('0')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">0</button>
+        <div class="grid grid-cols-3 gap-4 w-full max-w-xs">
+            <button onclick="pressKey('1')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all shadow-lg active:scale-95">1</button>
+            <button onclick="pressKey('2')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all shadow-lg active:scale-95">2</button>
+            <button onclick="pressKey('3')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all shadow-lg active:scale-95">3</button>
+            <button onclick="pressKey('4')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all shadow-lg active:scale-95">4</button>
+            <button onclick="pressKey('5')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all shadow-lg active:scale-95">5</button>
+            <button onclick="pressKey('6')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all shadow-lg active:scale-95">6</button>
+            <button onclick="pressKey('7')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all shadow-lg active:scale-95">7</button>
+            <button onclick="pressKey('8')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all shadow-lg active:scale-95">8</button>
+            <button onclick="pressKey('9')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all shadow-lg active:scale-95">9</button>
+            <button onclick="deleteKey()" class="h-16 rounded-2xl flex items-center justify-center text-pink-300 hover:text-white transition-all bg-rose-900/40 active:scale-95 font-semibold">DEL</button>
+            <button onclick="pressKey('0')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all shadow-lg active:scale-95">0</button>
             <div class="h-16"></div>
         </div>
     </div>
 
-    <div id="dashboard-view" class="hidden w-full max-w-md bg-rose-900/40 rounded-3xl p-6 border border-pink-500/30 shadow-2xl backdrop-blur-md my-8">
-        <div class="flex justify-between items-center mb-6">
+    <div id="dashboard-view" class="hidden w-full max-w-6xl my-4">
+        
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-rose-900/40 p-6 rounded-3xl border border-pink-500/20 backdrop-blur-md">
             <div>
-                <p class="text-pink-200/70 text-sm">Welcome back</p>
-                <h2 class="text-2xl font-bold pink-glow">Biya's Vault</h2>
+                <h2 class="text-3xl font-bold pink-glow">Biya's Financial Terminal</h2>
+                <p class="text-pink-200/70 text-sm mt-1">Data encrypted and stored locally.</p>
             </div>
-            <button onclick="logout()" class="p-3 bg-rose-800/50 rounded-full hover:bg-pink-600 transition-colors text-sm font-bold">
-                Lock
-            </button>
-        </div>
-
-        <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl p-6 mb-6 shadow-lg shadow-pink-500/40">
-            <div class="text-pink-100 text-sm font-medium mb-1">Total Net Balance</div>
-            <h1 class="text-4xl font-bold" id="display-balance">$0.00</h1>
-        </div>
-
-        <div class="bg-rose-950/50 rounded-2xl p-4 mb-6 border border-rose-800">
-            <h3 class="font-semibold mb-3 text-pink-200">New Transaction</h3>
-            <input type="text" id="tx-desc" placeholder="What was this for?" class="w-full bg-rose-900/50 rounded-xl p-3 mb-3 text-white placeholder-pink-300/50 border border-rose-700 outline-none focus:border-pink-500">
-            <input type="number" id="tx-amount" placeholder="Amount ($)" class="w-full bg-rose-900/50 rounded-xl p-3 mb-3 text-white placeholder-pink-300/50 border border-rose-700 outline-none focus:border-pink-500">
             <div class="flex gap-3">
-                <button onclick="addTransaction('income')" class="flex-1 bg-green-500/20 text-green-300 border border-green-500/50 p-3 rounded-xl font-bold hover:bg-green-500 hover:text-white transition-all">+ Income</button>
-                <button onclick="addTransaction('expense')" class="flex-1 bg-red-500/20 text-red-300 border border-red-500/50 p-3 rounded-xl font-bold hover:bg-red-500 hover:text-white transition-all">- Expense</button>
+                <button onclick="exportData()" class="px-4 py-2 bg-rose-800/80 rounded-xl hover:bg-rose-700 transition-colors text-sm font-semibold border border-rose-600 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Backup Data
+                </button>
+                <button onclick="logout()" class="px-4 py-2 bg-pink-600 rounded-xl hover:bg-pink-500 transition-colors text-sm font-bold shadow-lg shadow-pink-500/30 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Lock Vault
+                </button>
             </div>
         </div>
 
-        <div class="bg-rose-950/50 rounded-2xl p-4 mb-6 border border-rose-800">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="font-semibold text-pink-200">Connections & Secure Info</h3>
-                <button onclick="saveNotes()" class="text-xs bg-pink-500 px-3 py-1 rounded-lg font-bold hover:bg-pink-400">Save</button>
-            </div>
-            <textarea id="secure-notes" rows="4" placeholder="Store bank account numbers, passwords, or connection links here..." class="w-full bg-rose-900/50 rounded-xl p-3 text-sm text-white placeholder-pink-300/50 border border-rose-700 outline-none focus:border-pink-500 resize-none"></textarea>
-        </div>
-
-        <div class="bg-rose-950/50 rounded-2xl p-4 border border-rose-800">
-            <h3 class="font-semibold mb-3 text-pink-200">Recent History</h3>
-            <div id="tx-list" class="space-y-3 max-h-48 overflow-y-auto pr-2">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <div class="space-y-6">
+                <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl p-6 shadow-xl shadow-pink-500/20 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+                    <div class="text-pink-100 text-sm font-medium mb-1">Total Net Balance</div>
+                    <h1 class="text-5xl font-extrabold tracking-tight mb-4" id="display-balance">$0.00</h1>
+                    <div class="flex justify-between border-t border-white/20 pt-4 mt-2">
+                        <div>
+                            <p class="text-xs text-pink-200">Total Income</p>
+                            <p class="font-bold text-green-300" id="display-income">+$0.00</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-pink-200">Total Expenses</p>
+                            <p class="font-bold text-red-300" id="display-expense">-$0.00</p>
+                        </div>
+                    </div>
                 </div>
-            <button onclick="clearHistory()" class="w-full mt-4 text-xs text-rose-400 hover:text-white">Clear History</button>
+
+                <div class="bg-rose-900/40 rounded-3xl p-6 border border-rose-800/60 backdrop-blur-md">
+                    <h3 class="font-bold mb-4 text-pink-100 text-lg flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-400"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Log Transaction
+                    </h3>
+                    
+                    <input type="text" id="tx-desc" placeholder="Title (e.g., Client Payment, Software)" class="w-full bg-rose-950/50 rounded-xl p-3 mb-3 text-white placeholder-rose-400/50 border border-rose-700/50 outline-none focus:border-pink-500 transition-colors">
+                    
+                    <div class="flex gap-3 mb-3">
+                        <select id="tx-category" class="w-1/2 bg-rose-950/50 rounded-xl p-3 text-white border border-rose-700/50 outline-none focus:border-pink-500 appearance-none">
+                            <option value="General">General</option>
+                            <option value="YouTube Revenue">YouTube / Ad Revenue</option>
+                            <option value="Sponsorships">Sponsorships</option>
+                            <option value="Software/Tools">Editing Software / Tools</option>
+                            <option value="Media/Subscriptions">Anime & Media Subscriptions</option>
+                            <option value="Equipment">Hardware & Equipment</option>
+                            <option value="Personal">Personal Spending</option>
+                        </select>
+                        <input type="number" id="tx-amount" placeholder="Amount ($)" class="w-1/2 bg-rose-950/50 rounded-xl p-3 text-white placeholder-rose-400/50 border border-rose-700/50 outline-none focus:border-pink-500 transition-colors">
+                    </div>
+
+                    <div class="flex gap-3 mt-4">
+                        <button onclick="addTransaction('income')" class="flex-1 bg-green-500/10 text-green-400 border border-green-500/30 p-3 rounded-xl font-bold hover:bg-green-500 hover:text-white transition-all">+ Income</button>
+                        <button onclick="addTransaction('expense')" class="flex-1 bg-red-500/10 text-red-400 border border-red-500/30 p-3 rounded-xl font-bold hover:bg-red-500 hover:text-white transition-all">- Expense</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-rose-900/40 rounded-3xl p-6 border border-rose-800/60 backdrop-blur-md flex flex-col items-center justify-center">
+                    <h3 class="font-bold mb-4 text-pink-100 text-lg w-full">Expense Analytics</h3>
+                    <div class="relative w-full max-w-[250px] aspect-square">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-rose-900/40 rounded-3xl p-6 border border-rose-800/60 backdrop-blur-md">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-pink-100 text-lg">Connections & Keys</h3>
+                        <button onclick="saveNotes()" id="save-note-btn" class="text-xs bg-pink-600/80 px-4 py-2 rounded-lg font-bold hover:bg-pink-500 transition-colors">Save Securely</button>
+                    </div>
+                    <textarea id="secure-notes" rows="6" placeholder="Store your sensitive bank details, routing numbers, API keys, or platform passwords here..." class="w-full bg-rose-950/50 rounded-xl p-4 text-sm text-white placeholder-rose-400/50 border border-rose-700/50 outline-none focus:border-pink-500 resize-none font-mono"></textarea>
+                </div>
+            </div>
+
+            <div class="bg-rose-900/40 rounded-3xl p-6 border border-rose-800/60 backdrop-blur-md flex flex-col h-full max-h-[750px]">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-pink-100 text-lg">Ledger History</h3>
+                    <span class="text-xs text-pink-300/60" id="tx-count">0 records</span>
+                </div>
+                
+                <div id="tx-list" class="space-y-3 overflow-y-auto flex-1 pr-2 pb-4">
+                    </div>
+                
+                <button onclick="clearHistory()" class="w-full mt-4 py-3 rounded-xl border border-rose-800 text-sm font-semibold text-rose-400 hover:bg-rose-800 hover:text-white transition-all">
+                    Wipe Ledger History
+                </button>
+            </div>
+
         </div>
     </div>
 
@@ -92,11 +156,15 @@
         // --- State Variables ---
         let currentPin = "";
         const CORRECT_PIN = "2024";
+        let inactivityTimer;
+        let chartInstance = null;
         
-        // Load data from LocalStorage
-        let vaultData = JSON.parse(localStorage.getItem('biyas_vault_data')) || {
+        // Load data from LocalStorage or initialize
+        let vaultData = JSON.parse(localStorage.getItem('biyas_pro_vault')) || {
             balance: 0,
-            transactions: [],
+            totalIncome: 0,
+            totalExpense: 0,
+            transactions: [], 
             notes: ""
         };
 
@@ -104,17 +172,29 @@
         const loginView = document.getElementById('login-view');
         const dashboardView = document.getElementById('dashboard-view');
         const pinDots = document.querySelectorAll('.pin-dot');
-        const balanceDisplay = document.getElementById('display-balance');
-        const txList = document.getElementById('tx-list');
-        const secureNotes = document.getElementById('secure-notes');
+        
+        // --- Security: Auto-Lock Logic ---
+        function resetTimer() {
+            clearTimeout(inactivityTimer);
+            if (!dashboardView.classList.contains('hidden')) {
+                // Lock after 3 minutes (180000 ms) of inactivity
+                inactivityTimer = setTimeout(logout, 180000); 
+            }
+        }
+        
+        // Listen for activity to prevent auto-lock while working
+        window.onload = resetTimer;
+        document.onmousemove = resetTimer;
+        document.onkeypress = resetTimer;
+        document.onclick = resetTimer;
 
         // --- PIN Logic ---
         function updatePinDisplay() {
             pinDots.forEach((dot, index) => {
                 if (index < currentPin.length) {
-                    dot.className = "pin-dot w-4 h-4 rounded-full transition-all bg-pink-400 border border-pink-300 scale-125 shadow-[0_0_10px_rgba(244,114,182,0.8)]";
+                    dot.className = "pin-dot w-4 h-4 rounded-full transition-all duration-300 bg-pink-400 border border-pink-300 scale-125 shadow-[0_0_15px_rgba(244,114,182,0.8)]";
                 } else {
-                    dot.className = "pin-dot w-4 h-4 rounded-full transition-all bg-rose-900 border border-rose-800";
+                    dot.className = "pin-dot w-4 h-4 rounded-full transition-all duration-300 bg-rose-900 border border-rose-800";
                 }
             });
 
@@ -123,30 +203,27 @@
                     if (currentPin === CORRECT_PIN) {
                         login();
                     } else {
-                        alert("Access Denied: Incorrect PIN");
+                        // Shake animation logic could go here
                         currentPin = "";
                         updatePinDisplay();
                     }
-                }, 100);
+                }, 150);
             }
         }
 
         function pressKey(num) {
-            if (currentPin.length < 4) {
-                currentPin += num;
-                updatePinDisplay();
-            }
+            if (currentPin.length < 4) { currentPin += num; updatePinDisplay(); }
         }
 
         function deleteKey() {
-            currentPin = currentPin.slice(0, -1);
-            updatePinDisplay();
+            currentPin = currentPin.slice(0, -1); updatePinDisplay();
         }
 
         // --- Navigation ---
         function login() {
             loginView.classList.add('hidden');
             dashboardView.classList.remove('hidden');
+            resetTimer(); // Start security timer
             renderDashboard();
         }
 
@@ -155,22 +232,29 @@
             updatePinDisplay();
             dashboardView.classList.add('hidden');
             loginView.classList.remove('hidden');
+            clearTimeout(inactivityTimer);
+            // Clear fields for security
+            document.getElementById('secure-notes').value = "";
         }
 
-        // --- Dashboard Logic ---
+        // --- Dashboard Render Logic ---
         function renderDashboard() {
-            // Render Balance
-            balanceDisplay.innerText = "$" + vaultData.balance.toLocaleString('en-US', {minimumFractionDigits: 2});
+            // Update Top Level Numbers
+            document.getElementById('display-balance').innerText = "$" + vaultData.balance.toLocaleString('en-US', {minimumFractionDigits: 2});
+            document.getElementById('display-income').innerText = "+$" + vaultData.totalIncome.toLocaleString('en-US', {minimumFractionDigits: 2});
+            document.getElementById('display-expense').innerText = "-$" + vaultData.totalExpense.toLocaleString('en-US', {minimumFractionDigits: 2});
             
-            // Render Notes
-            secureNotes.value = vaultData.notes;
+            document.getElementById('secure-notes').value = vaultData.notes;
+            document.getElementById('tx-count').innerText = `${vaultData.transactions.length} records`;
 
-            // Render Transactions
+            // Render Ledger list
+            const txList = document.getElementById('tx-list');
             txList.innerHTML = "";
+            
             if (vaultData.transactions.length === 0) {
-                txList.innerHTML = "<p class='text-sm text-pink-300/50 text-center py-2'>No transactions yet.</p>";
+                txList.innerHTML = `<div class="text-center text-rose-400/50 mt-10"><p>No transactions found.</p><p class="text-xs">Start logging to see history.</p></div>`;
             } else {
-                // Reverse loop to show newest first
+                // Loop backwards for chronological order (newest first)
                 for (let i = vaultData.transactions.length - 1; i >= 0; i--) {
                     let tx = vaultData.transactions[i];
                     let isIncome = tx.type === 'income';
@@ -178,72 +262,167 @@
                     let sign = isIncome ? '+' : '-';
                     
                     txList.innerHTML += `
-                        <div class="flex justify-between items-center bg-rose-900/30 p-3 rounded-xl border border-rose-800/50">
-                            <div>
-                                <p class="text-sm font-medium text-white">${tx.desc}</p>
-                                <p class="text-xs text-pink-300/50">${tx.date}</p>
+                        <div class="flex justify-between items-center bg-rose-950/40 p-4 rounded-2xl border border-rose-800/40 hover:border-pink-500/30 transition-colors">
+                            <div class="flex-1 overflow-hidden pr-2">
+                                <p class="text-sm font-bold text-white truncate">${tx.desc}</p>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-rose-900/80 text-pink-300">${tx.category}</span>
+                                    <span class="text-[10px] text-rose-400/60">${tx.date}</span>
+                                </div>
                             </div>
-                            <p class="font-bold ${amountColor}">${sign}$${parseFloat(tx.amount).toLocaleString('en-US', {minimumFractionDigits: 2})}</p>
+                            <p class="font-bold ${amountColor} whitespace-nowrap">${sign}$${parseFloat(tx.amount).toLocaleString('en-US', {minimumFractionDigits: 2})}</p>
                         </div>
                     `;
                 }
             }
+            
+            updateChart();
             saveData();
         }
 
+        // --- Transaction Logic ---
         function addTransaction(type) {
             let desc = document.getElementById('tx-desc').value.trim();
+            let category = document.getElementById('tx-category').value;
             let amount = parseFloat(document.getElementById('tx-amount').value);
 
             if (!desc || isNaN(amount) || amount <= 0) {
-                alert("Please enter a valid description and amount.");
+                alert("Please enter a valid title and amount.");
                 return;
             }
 
             if (type === 'income') {
                 vaultData.balance += amount;
+                vaultData.totalIncome += amount;
             } else {
                 vaultData.balance -= amount;
+                vaultData.totalExpense += amount;
             }
+
+            // Create timestamp
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
             vaultData.transactions.push({
                 desc: desc,
                 amount: amount,
                 type: type,
-                date: new Date().toLocaleDateString()
+                category: category,
+                date: dateStr
             });
 
-            // Clear inputs
+            // Reset inputs
             document.getElementById('tx-desc').value = "";
             document.getElementById('tx-amount').value = "";
-
+            
             renderDashboard();
         }
 
+        // --- Analytics Chart Logic ---
+        function updateChart() {
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            
+            // Calculate expenses by category
+            const categoryTotals = {};
+            let hasExpenses = false;
+
+            vaultData.transactions.forEach(tx => {
+                if (tx.type === 'expense') {
+                    hasExpenses = true;
+                    categoryTotals[tx.category] = (categoryTotals[tx.category] || 0) + tx.amount;
+                }
+            });
+
+            // If no data, show a placeholder
+            const labels = hasExpenses ? Object.keys(categoryTotals) : ['No Data'];
+            const data = hasExpenses ? Object.values(categoryTotals) : [1];
+            const bgColors = hasExpenses ? [
+                '#f43f5e', '#ec4899', '#d946ef', '#a855f7', '#8b5cf6', '#6366f1', '#3b82f6'
+            ] : ['#4c0519']; // Rose-950 for empty state
+
+            if (chartInstance) {
+                chartInstance.destroy(); // Destroy old chart before re-rendering
+            }
+
+            Chart.defaults.color = '#fbcfe8'; // text-pink-200
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: bgColors,
+                        borderWidth: 2,
+                        borderColor: '#881337', // rose-900 border
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: hasExpenses,
+                            backgroundColor: 'rgba(76, 5, 25, 0.9)',
+                            titleColor: '#fbcfe8',
+                            bodyColor: '#fff',
+                            borderColor: '#ec4899',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed !== null) {
+                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Data Management ---
         function saveNotes() {
-            vaultData.notes = secureNotes.value;
+            vaultData.notes = document.getElementById('secure-notes').value;
             saveData();
             
-            // Visual feedback for saving
-            let btn = event.target;
-            let originalText = btn.innerText;
+            let btn = document.getElementById('save-note-btn');
             btn.innerText = "Saved!";
-            btn.classList.replace('bg-pink-500', 'bg-green-500');
+            btn.classList.replace('bg-pink-600/80', 'bg-green-500');
             setTimeout(() => {
-                btn.innerText = originalText;
-                btn.classList.replace('bg-green-500', 'bg-pink-500');
+                btn.innerText = "Save Securely";
+                btn.classList.replace('bg-green-500', 'bg-pink-600/80');
             }, 1500);
         }
 
         function clearHistory() {
-            if(confirm("Are you sure you want to clear your transaction history? Your balance will remain the same.")) {
+            if(confirm("DANGER: Wiping the ledger will delete all transaction history and reset your analytics. Are you absolutely sure?")) {
                 vaultData.transactions = [];
+                vaultData.balance = 0;
+                vaultData.totalIncome = 0;
+                vaultData.totalExpense = 0;
                 renderDashboard();
             }
         }
 
+        function exportData() {
+            // Converts your local vault data into a downloadable JSON file
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(vaultData));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "biyas_vault_backup_" + new Date().getTime() + ".json");
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
         function saveData() {
-            localStorage.setItem('biyas_vault_data', JSON.stringify(vaultData));
+            localStorage.setItem('biyas_pro_vault', JSON.stringify(vaultData));
         }
     </script>
 </body>
