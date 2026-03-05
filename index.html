@@ -5,110 +5,246 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biya’s Vault | Secure Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #4c0519; margin: 0; overflow: hidden; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #4c0519; color: white; margin: 0; }
         .pink-glow { text-shadow: 0 0 10px rgba(244, 114, 182, 0.5); }
+        .hidden { display: none !important; }
     </style>
 </head>
-<body>
-    <div id="root"></div>
+<body class="min-h-screen bg-rose-950 flex flex-col items-center justify-center p-4">
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+    <div id="login-view" class="flex flex-col items-center justify-center w-full max-w-sm">
+        <div class="mb-8 text-center">
+            <div class="w-20 h-20 bg-pink-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-pink-500/30 border border-pink-400/50">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight pink-glow">Biya’s Vault</h1>
+            <p class="text-pink-200/60 text-sm mt-2 font-medium">Enter PIN to Unlock</p>
+        </div>
 
-        const BiyasVault = () => {
-            const [pin, setPin] = useState("");
-            const [isAuthenticated, setIsAuthenticated] = useState(false);
-            const [balance, setBalance] = useState(2500);
+        <div class="flex gap-4 mb-10" id="pin-indicators">
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all"></div>
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all"></div>
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all"></div>
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all"></div>
+        </div>
 
-            // This ensures icons update every time the screen changes
-            useEffect(() => {
-                if (window.lucide) {
-                    window.lucide.createIcons();
+        <div class="grid grid-cols-3 gap-4 w-full">
+            <button onclick="pressKey('1')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">1</button>
+            <button onclick="pressKey('2')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">2</button>
+            <button onclick="pressKey('3')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">3</button>
+            <button onclick="pressKey('4')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">4</button>
+            <button onclick="pressKey('5')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">5</button>
+            <button onclick="pressKey('6')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">6</button>
+            <button onclick="pressKey('7')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">7</button>
+            <button onclick="pressKey('8')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">8</button>
+            <button onclick="pressKey('9')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">9</button>
+            <button onclick="deleteKey()" class="h-16 rounded-2xl flex items-center justify-center text-pink-300 hover:text-white transition-all bg-rose-900/40">DEL</button>
+            <button onclick="pressKey('0')" class="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all">0</button>
+            <div class="h-16"></div>
+        </div>
+    </div>
+
+    <div id="dashboard-view" class="hidden w-full max-w-md bg-rose-900/40 rounded-3xl p-6 border border-pink-500/30 shadow-2xl backdrop-blur-md my-8">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <p class="text-pink-200/70 text-sm">Welcome back</p>
+                <h2 class="text-2xl font-bold pink-glow">Biya's Vault</h2>
+            </div>
+            <button onclick="logout()" class="p-3 bg-rose-800/50 rounded-full hover:bg-pink-600 transition-colors text-sm font-bold">
+                Lock
+            </button>
+        </div>
+
+        <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl p-6 mb-6 shadow-lg shadow-pink-500/40">
+            <div class="text-pink-100 text-sm font-medium mb-1">Total Net Balance</div>
+            <h1 class="text-4xl font-bold" id="display-balance">$0.00</h1>
+        </div>
+
+        <div class="bg-rose-950/50 rounded-2xl p-4 mb-6 border border-rose-800">
+            <h3 class="font-semibold mb-3 text-pink-200">New Transaction</h3>
+            <input type="text" id="tx-desc" placeholder="What was this for?" class="w-full bg-rose-900/50 rounded-xl p-3 mb-3 text-white placeholder-pink-300/50 border border-rose-700 outline-none focus:border-pink-500">
+            <input type="number" id="tx-amount" placeholder="Amount ($)" class="w-full bg-rose-900/50 rounded-xl p-3 mb-3 text-white placeholder-pink-300/50 border border-rose-700 outline-none focus:border-pink-500">
+            <div class="flex gap-3">
+                <button onclick="addTransaction('income')" class="flex-1 bg-green-500/20 text-green-300 border border-green-500/50 p-3 rounded-xl font-bold hover:bg-green-500 hover:text-white transition-all">+ Income</button>
+                <button onclick="addTransaction('expense')" class="flex-1 bg-red-500/20 text-red-300 border border-red-500/50 p-3 rounded-xl font-bold hover:bg-red-500 hover:text-white transition-all">- Expense</button>
+            </div>
+        </div>
+
+        <div class="bg-rose-950/50 rounded-2xl p-4 mb-6 border border-rose-800">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-semibold text-pink-200">Connections & Secure Info</h3>
+                <button onclick="saveNotes()" class="text-xs bg-pink-500 px-3 py-1 rounded-lg font-bold hover:bg-pink-400">Save</button>
+            </div>
+            <textarea id="secure-notes" rows="4" placeholder="Store bank account numbers, passwords, or connection links here..." class="w-full bg-rose-900/50 rounded-xl p-3 text-sm text-white placeholder-pink-300/50 border border-rose-700 outline-none focus:border-pink-500 resize-none"></textarea>
+        </div>
+
+        <div class="bg-rose-950/50 rounded-2xl p-4 border border-rose-800">
+            <h3 class="font-semibold mb-3 text-pink-200">Recent History</h3>
+            <div id="tx-list" class="space-y-3 max-h-48 overflow-y-auto pr-2">
+                </div>
+            <button onclick="clearHistory()" class="w-full mt-4 text-xs text-rose-400 hover:text-white">Clear History</button>
+        </div>
+    </div>
+
+    <script>
+        // --- State Variables ---
+        let currentPin = "";
+        const CORRECT_PIN = "2024";
+        
+        // Load data from LocalStorage
+        let vaultData = JSON.parse(localStorage.getItem('biyas_vault_data')) || {
+            balance: 0,
+            transactions: [],
+            notes: ""
+        };
+
+        // --- DOM Elements ---
+        const loginView = document.getElementById('login-view');
+        const dashboardView = document.getElementById('dashboard-view');
+        const pinDots = document.querySelectorAll('.pin-dot');
+        const balanceDisplay = document.getElementById('display-balance');
+        const txList = document.getElementById('tx-list');
+        const secureNotes = document.getElementById('secure-notes');
+
+        // --- PIN Logic ---
+        function updatePinDisplay() {
+            pinDots.forEach((dot, index) => {
+                if (index < currentPin.length) {
+                    dot.className = "pin-dot w-4 h-4 rounded-full transition-all bg-pink-400 border border-pink-300 scale-125 shadow-[0_0_10px_rgba(244,114,182,0.8)]";
+                } else {
+                    dot.className = "pin-dot w-4 h-4 rounded-full transition-all bg-rose-900 border border-rose-800";
                 }
-            }, [isAuthenticated, pin]);
+            });
 
-            const handleKeyPress = (num) => {
-                if (pin.length < 4) setPin(prev => prev + num);
-            };
-
-            const handleDelete = () => {
-                setPin(prev => prev.slice(0, -1));
-            };
-
-            useEffect(() => {
-                if (pin.length === 4) {
-                    if (pin === "2024") { 
-                        setIsAuthenticated(true);
+            if (currentPin.length === 4) {
+                setTimeout(() => {
+                    if (currentPin === CORRECT_PIN) {
+                        login();
                     } else {
-                        setPin("");
                         alert("Access Denied: Incorrect PIN");
+                        currentPin = "";
+                        updatePinDisplay();
                     }
-                }
-            }, [pin]);
+                }, 100);
+            }
+        }
 
-            const handleLogout = () => {
-                setIsAuthenticated(false);
-                setPin("");
-            };
+        function pressKey(num) {
+            if (currentPin.length < 4) {
+                currentPin += num;
+                updatePinDisplay();
+            }
+        }
 
-            // --- AUTHENTICATED DASHBOARD VIEW ---
-            if (isAuthenticated) {
-                return (
-                    <div className="min-h-screen bg-rose-950 flex flex-col items-center justify-center p-4 text-white">
-                        <div className="w-full max-w-sm bg-rose-900/40 rounded-3xl p-8 border border-pink-500/30 shadow-2xl backdrop-blur-md">
-                            <div className="flex justify-between items-start mb-8">
-                                <div>
-                                    <p className="text-pink-200/70 text-sm">Welcome back, Biya</p>
-                                    <h2 className="text-2xl font-bold pink-glow">Safe Deposit</h2>
-                                </div>
-                                <button onClick={handleLogout} className="p-2 bg-rose-800/50 rounded-full hover:bg-pink-600 transition-colors">
-                                    <i data-lucide="log-out" className="w-5 h-5"></i>
-                                </button>
+        function deleteKey() {
+            currentPin = currentPin.slice(0, -1);
+            updatePinDisplay();
+        }
+
+        // --- Navigation ---
+        function login() {
+            loginView.classList.add('hidden');
+            dashboardView.classList.remove('hidden');
+            renderDashboard();
+        }
+
+        function logout() {
+            currentPin = "";
+            updatePinDisplay();
+            dashboardView.classList.add('hidden');
+            loginView.classList.remove('hidden');
+        }
+
+        // --- Dashboard Logic ---
+        function renderDashboard() {
+            // Render Balance
+            balanceDisplay.innerText = "$" + vaultData.balance.toLocaleString('en-US', {minimumFractionDigits: 2});
+            
+            // Render Notes
+            secureNotes.value = vaultData.notes;
+
+            // Render Transactions
+            txList.innerHTML = "";
+            if (vaultData.transactions.length === 0) {
+                txList.innerHTML = "<p class='text-sm text-pink-300/50 text-center py-2'>No transactions yet.</p>";
+            } else {
+                // Reverse loop to show newest first
+                for (let i = vaultData.transactions.length - 1; i >= 0; i--) {
+                    let tx = vaultData.transactions[i];
+                    let isIncome = tx.type === 'income';
+                    let amountColor = isIncome ? 'text-green-400' : 'text-red-400';
+                    let sign = isIncome ? '+' : '-';
+                    
+                    txList.innerHTML += `
+                        <div class="flex justify-between items-center bg-rose-900/30 p-3 rounded-xl border border-rose-800/50">
+                            <div>
+                                <p class="text-sm font-medium text-white">${tx.desc}</p>
+                                <p class="text-xs text-pink-300/50">${tx.date}</p>
                             </div>
-
-                            <div className="bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl p-6 mb-6 shadow-lg shadow-pink-500/40">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <i data-lucide="wallet" className="w-4 h-4"></i>
-                                    <span className="text-pink-50 text-sm font-medium">Vault Balance</span>
-                                </div>
-                                <h1 className="text-4xl font-bold">${balance.toLocaleString()}</h1>
-                            </div>
-
-                            <div className="space-y-3">
-                                <button className="w-full py-4 bg-white/10 rounded-xl font-bold hover:bg-white/20 transition-all border border-white/5">
-                                    Withdraw
-                                </button>
-                                <button 
-                                    onClick={() => setBalance(prev => prev + 100)} 
-                                    className="w-full py-4 bg-pink-500 rounded-xl font-bold hover:bg-pink-400 active:scale-95 transition-all shadow-md"
-                                >
-                                    Add Funds ($100)
-                                </button>
-                            </div>
+                            <p class="font-bold ${amountColor}">${sign}$${parseFloat(tx.amount).toLocaleString('en-US', {minimumFractionDigits: 2})}</p>
                         </div>
-                    </div>
-                );
+                    `;
+                }
+            }
+            saveData();
+        }
+
+        function addTransaction(type) {
+            let desc = document.getElementById('tx-desc').value.trim();
+            let amount = parseFloat(document.getElementById('tx-amount').value);
+
+            if (!desc || isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid description and amount.");
+                return;
             }
 
-            // --- LOGIN VIEW ---
-            return (
-                <div className="min-h-screen bg-rose-950 flex flex-col items-center justify-center p-4 text-white">
-                    <div className="mb-8 text-center">
-                        <div className="w-20 h-20 bg-pink-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-pink-500/30 border border-pink-400/50">
-                            <i data-lucide="heart" fill="white" className="w-10 h-10"></i>
-                        </div>
-                        <h1 className="text-3xl font-extrabold tracking-tight pink-glow">Biya’s Vault</h1>
-                        <p className="text-pink-200/60 text-sm mt-2 font-medium">Enter PIN to Unlock</p>
-                    </div>
+            if (type === 'income') {
+                vaultData.balance += amount;
+            } else {
+                vaultData.balance -= amount;
+            }
 
-                    <div className="flex gap-4 mb-10">
-                        {[0, 1, 2, 3].map((i) => (
-                            <div key={i} className={`w-4 h-4 rounded-full transition-all duration-300 border ${
-                                i < pin.length 
-                                ? "bg-pink-400 border-pink-300 scale-125 shadow-[0_0_1
+            vaultData.transactions.push({
+                desc: desc,
+                amount: amount,
+                type: type,
+                date: new Date().toLocaleDateString()
+            });
+
+            // Clear inputs
+            document.getElementById('tx-desc').value = "";
+            document.getElementById('tx-amount').value = "";
+
+            renderDashboard();
+        }
+
+        function saveNotes() {
+            vaultData.notes = secureNotes.value;
+            saveData();
+            
+            // Visual feedback for saving
+            let btn = event.target;
+            let originalText = btn.innerText;
+            btn.innerText = "Saved!";
+            btn.classList.replace('bg-pink-500', 'bg-green-500');
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.replace('bg-green-500', 'bg-pink-500');
+            }, 1500);
+        }
+
+        function clearHistory() {
+            if(confirm("Are you sure you want to clear your transaction history? Your balance will remain the same.")) {
+                vaultData.transactions = [];
+                renderDashboard();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('biyas_vault_data', JSON.stringify(vaultData));
+        }
+    </script>
+</body>
+</html>
