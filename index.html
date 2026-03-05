@@ -3,104 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biya’s Pro Vault | Multi-Bank Terminal</title>
+    <title>Biya’s Pro Vault | Titanium Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #4c0519; color: white; margin: 0; }
-        .pink-glow { text-shadow: 0 0 15px rgba(244, 114, 182, 0.6); }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #4c0519; color: white; margin: 0; }
+        .pink-glow { text-shadow: 0 0 20px rgba(244, 114, 182, 0.4); }
         .hidden { display: none !important; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #ec4899; border-radius: 10px; }
+        .glass { background: rgba(136, 19, 55, 0.3); backdrop-filter: blur(12px); border: 1px solid rgba(244, 114, 182, 0.2); }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #f472b6; border-radius: 10px; }
     </style>
 </head>
 <body class="min-h-screen bg-rose-950 flex flex-col items-center justify-center p-4">
 
-    <div id="login-view" class="flex flex-col items-center justify-center w-full max-w-sm">
-        <div class="mb-8 text-center">
-            <div class="w-20 h-20 bg-pink-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-pink-500/40 border border-pink-400/50">
-                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+    <div id="login-view" class="flex flex-col items-center justify-center w-full max-w-sm animate-fade-in">
+        <div class="mb-10 text-center">
+            <div id="login-profile-pic" class="w-24 h-24 rounded-full border-4 border-pink-500 shadow-2xl mx-auto mb-6 bg-rose-900 flex items-center justify-center overflow-hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
-            <h1 class="text-4xl font-extrabold pink-glow">Biya’s Vault</h1>
+            <h1 class="text-4xl font-extrabold pink-glow mb-2">Biya’s Vault</h1>
+            <p class="text-pink-300/60 text-xs tracking-widest uppercase">Titanium Security Enabled</p>
         </div>
-        <div class="flex gap-4 mb-10" id="pin-indicators">
-            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800"></div>
-            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800"></div>
-            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800"></div>
-            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800"></div>
+        
+        <div class="flex gap-4 mb-12" id="pin-indicators">
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all duration-300"></div>
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all duration-300"></div>
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all duration-300"></div>
+            <div class="pin-dot w-4 h-4 rounded-full bg-rose-900 border border-rose-800 transition-all duration-300"></div>
         </div>
-        <div class="grid grid-cols-3 gap-4 w-full max-w-xs" id="keypad">
-            </div>
+
+        <div class="grid grid-cols-3 gap-5 w-full max-w-xs" id="keypad"></div>
     </div>
 
-    <div id="dashboard-view" class="hidden w-full max-w-6xl my-4 space-y-6">
+    <div id="dashboard-view" class="hidden w-full max-w-7xl my-6 space-y-6">
         
-        <div class="flex justify-between items-center bg-rose-900/40 p-6 rounded-3xl border border-pink-500/20 backdrop-blur-md">
-            <h2 class="text-2xl font-bold pink-glow">Biya's Financial Hub</h2>
+        <header class="flex flex-col md:flex-row justify-between items-center glass p-6 rounded-[2rem] gap-4">
+            <div class="flex items-center gap-4">
+                <div id="header-pic" class="w-14 h-14 rounded-full border-2 border-pink-500 bg-rose-900 overflow-hidden"></div>
+                <div>
+                    <h2 class="text-xl font-bold pink-glow">Hello, <span id="user-name-display">Biya</span></h2>
+                    <p class="text-xs text-pink-300/60">Financial Standing: <span class="text-green-400 font-bold" id="status-label">Strong</span></p>
+                </div>
+            </div>
             <div class="flex gap-3">
-                <button onclick="showSection('settings')" class="p-2 bg-rose-800 rounded-xl hover:bg-pink-600 transition-all">Settings</button>
-                <button onclick="logout()" class="p-2 bg-pink-600 rounded-xl font-bold">Lock</button>
+                <button onclick="showModal('settings-modal')" class="px-5 py-2.5 bg-rose-800/50 rounded-2xl hover:bg-rose-700 transition-all text-sm font-semibold border border-rose-700">Settings</button>
+                <button onclick="logout()" class="px-6 py-2.5 bg-pink-600 rounded-2xl font-extrabold shadow-lg shadow-pink-500/20 hover:bg-pink-500 transition-all">Lock Vault</button>
             </div>
-        </div>
+        </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <div class="space-y-6">
-                <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl p-6 shadow-xl">
-                    <p class="text-pink-100 text-sm">Total Combined Balance</p>
-                    <h1 class="text-4xl font-black" id="total-balance">$0.00</h1>
-                </div>
-
-                <div class="bg-rose-900/40 rounded-3xl p-6 border border-rose-800/60">
-                    <h3 class="font-bold mb-4 flex justify-between">My Banks <button onclick="addBank()" class="text-pink-400 text-xs text-right">+ Add Bank</button></h3>
-                    <div id="bank-list" class="space-y-3">
-                        </div>
-                </div>
-            </div>
-
-            <div class="space-y-6">
-                <div class="bg-rose-900/40 rounded-3xl p-6 border border-rose-800/60">
-                    <h3 class="font-bold mb-4">New Entry</h3>
-                    <input type="text" id="tx-desc" placeholder="Description" class="w-full bg-rose-950/50 p-3 rounded-xl mb-3 border border-rose-700 outline-none">
-                    <input type="number" id="tx-amount" placeholder="Amount ($)" class="w-full bg-rose-950/50 p-3 rounded-xl mb-3 border border-rose-700 outline-none">
-                    
-                    <p class="text-xs text-pink-300 mb-1 ml-1">Source Account:</p>
-                    <select id="tx-bank-select" class="w-full bg-rose-950/50 p-3 rounded-xl mb-4 border border-rose-700 outline-none">
-                        </select>
-
-                    <div class="flex gap-3">
-                        <button onclick="processTx('income')" class="flex-1 bg-green-600 p-3 rounded-xl font-bold">Credit (+)</button>
-                        <button onclick="processTx('expense')" class="flex-1 bg-red-600 p-3 rounded-xl font-bold">Debit (-)</button>
+            <div class="lg:col-span-3 space-y-6">
+                <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+                    <p class="text-pink-100/80 text-xs font-bold uppercase tracking-tighter mb-1">Net Liquid Assets</p>
+                    <h1 class="text-4xl font-black mb-6" id="total-balance">Rs. 0</h1>
+                    <div class="space-y-3 pt-4 border-t border-white/10">
+                        <div class="flex justify-between text-xs font-medium"><span class="opacity-70">Total In</span><span id="total-in" class="text-white">Rs. 0</span></div>
+                        <div class="flex justify-between text-xs font-medium"><span class="opacity-70">Total Out</span><span id="total-out" class="text-white">Rs. 0</span></div>
                     </div>
                 </div>
 
-                <div class="bg-rose-900/40 rounded-3xl p-6 border border-rose-800/60">
-                    <h3 class="font-bold mb-3">Secure Notes</h3>
-                    <textarea id="secure-notes" oninput="saveNotes()" rows="4" class="w-full bg-rose-950/50 p-3 rounded-xl text-xs border border-rose-700 outline-none resize-none"></textarea>
+                <div class="glass rounded-[2rem] p-6">
+                    <div class="flex justify-between items-center mb-5">
+                        <h3 class="font-bold text-pink-100">Accounts</h3>
+                        <button onclick="addBank()" class="text-[10px] bg-pink-500/20 text-pink-300 px-3 py-1 rounded-full border border-pink-500/30">+ New Bank</button>
+                    </div>
+                    <div id="bank-list" class="space-y-3"></div>
                 </div>
             </div>
 
-            <div class="bg-rose-900/40 rounded-3xl p-6 border border-rose-800/60 flex flex-col h-[600px]">
-                <h3 class="font-bold mb-4">Live Ledger</h3>
+            <div class="lg:col-span-5 space-y-6">
+                <div class="glass rounded-[2rem] p-8">
+                    <h3 class="font-bold mb-6 text-lg">New Ledger Entry</h3>
+                    <div class="space-y-4">
+                        <input type="text" id="tx-desc" placeholder="Entry Title (e.g. YouTube Salary)" class="w-full bg-rose-950/40 p-4 rounded-2xl border border-rose-800 focus:border-pink-500 outline-none transition-all">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="number" id="tx-amount" placeholder="Amount (PKR)" class="w-full bg-rose-950/40 p-4 rounded-2xl border border-rose-800 focus:border-pink-500 outline-none">
+                            <select id="tx-bank-select" class="w-full bg-rose-950/40 p-4 rounded-2xl border border-rose-800 outline-none"></select>
+                        </div>
+                        <div class="flex gap-4 pt-2">
+                            <button onclick="processTx('income')" class="flex-1 bg-green-500/10 text-green-400 border border-green-500/30 p-4 rounded-2xl font-bold hover:bg-green-500 hover:text-white transition-all">Add Credit</button>
+                            <button onclick="processTx('expense')" class="flex-1 bg-rose-500/10 text-rose-400 border border-rose-500/30 p-4 rounded-2xl font-bold hover:bg-rose-500 hover:text-white transition-all">Log Debit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass rounded-[2rem] p-6">
+                    <h3 class="font-bold mb-4">Secure Connections & Keys</h3>
+                    <textarea id="secure-notes" oninput="saveNotes()" rows="4" class="w-full bg-rose-950/40 p-4 rounded-2xl text-sm border border-rose-800 outline-none resize-none font-mono placeholder:opacity-30" placeholder="Store account numbers, passwords, or links..."></textarea>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4 glass rounded-[2rem] p-6 flex flex-col h-[700px]">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold">Recent Activity</h3>
+                    <input type="text" id="tx-search" oninput="render()" placeholder="Search..." class="bg-rose-950/40 text-[10px] px-3 py-1.5 rounded-full border border-rose-800 outline-none w-24 focus:w-32 transition-all">
+                </div>
                 <div id="tx-history" class="flex-1 overflow-y-auto space-y-3 pr-2"></div>
-                <button onclick="clearAll()" class="mt-4 text-[10px] text-rose-500 hover:text-white uppercase tracking-widest">Reset All Data</button>
+                <button onclick="clearAll()" class="mt-6 text-[10px] text-rose-500/50 hover:text-rose-400 uppercase font-black tracking-widest transition-all">Wipe Terminal Data</button>
             </div>
         </div>
     </div>
 
-    <div id="settings-view" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
-        <div class="bg-rose-900 w-full max-w-sm rounded-3xl p-8 border border-pink-500/30">
-            <h2 class="text-2xl font-bold mb-6">Security Settings</h2>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-xs text-pink-300">Change 4-Digit PIN</label>
-                    <input type="password" id="new-pin" maxlength="4" placeholder="Enter New PIN" class="w-full bg-rose-950 p-3 rounded-xl mt-1 border border-rose-700 outline-none">
+    <div id="settings-modal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-xl flex items-center justify-center p-6 z-50">
+        <div class="glass w-full max-w-lg rounded-[2.5rem] p-10 space-y-8">
+            <h2 class="text-3xl font-black pink-glow text-center">Vault Configuration</h2>
+            
+            <div class="space-y-6">
+                <div class="flex items-center gap-6 p-4 bg-rose-950/40 rounded-3xl border border-rose-800">
+                    <div id="settings-pic-preview" class="w-20 h-20 rounded-full bg-rose-900 border-2 border-pink-500 overflow-hidden"></div>
+                    <div class="flex-1">
+                        <label class="text-[10px] font-bold text-pink-300 block mb-1 uppercase">Profile Identity</label>
+                        <input type="text" id="config-name" placeholder="Your Name" class="w-full bg-transparent border-b border-rose-800 outline-none pb-1 font-bold">
+                        <input type="text" id="config-pic-url" placeholder="Paste Picture URL" class="w-full bg-transparent text-[10px] mt-2 outline-none opacity-50">
+                    </div>
                 </div>
-                <div class="flex gap-3 pt-4">
-                    <button onclick="updatePin()" class="flex-1 bg-pink-600 p-3 rounded-xl font-bold">Update PIN</button>
-                    <button onclick="showSection('dashboard')" class="flex-1 bg-rose-800 p-3 rounded-xl font-bold">Cancel</button>
+
+                <div class="p-6 bg-rose-950/40 rounded-3xl border border-rose-800">
+                    <label class="text-[10px] font-bold text-pink-300 block mb-3 uppercase">Security Protocol</label>
+                    <input type="password" id="new-pin" maxlength="4" placeholder="Update 4-Digit PIN" class="w-full bg-rose-900/50 p-4 rounded-2xl border border-rose-800 outline-none focus:border-pink-500">
                 </div>
+            </div>
+
+            <div class="flex gap-4">
+                <button onclick="saveSettings()" class="flex-1 bg-pink-600 p-4 rounded-2xl font-bold shadow-xl shadow-pink-600/20 transition-all">Save Changes</button>
+                <button onclick="hideModal('settings-modal')" class="px-8 py-4 bg-rose-800/50 rounded-2xl font-bold">Close</button>
             </div>
         </div>
     </div>
@@ -108,75 +136,120 @@
     <script>
         let currentPinAttempt = "";
         
-        let vault = JSON.parse(localStorage.getItem('biya_vault_v3')) || {
+        let vault = JSON.parse(localStorage.getItem('biya_titanium_vault')) || {
             pin: "2024",
-            banks: [{ name: "Main Vault", balance: 1000 }],
+            userName: "Biya",
+            profilePic: "",
+            banks: [{ name: "Standard Chartered", balance: 50000 }],
             transactions: [],
             notes: ""
         };
 
         const pinDots = document.querySelectorAll('.pin-dot');
 
-        // --- AUTH ---
+        // --- AUTH SYSTEM ---
         function pressKey(n) {
             if (currentPinAttempt.length < 4) {
                 currentPinAttempt += n;
                 updateDots();
                 if (currentPinAttempt.length === 4) {
                     if (currentPinAttempt === vault.pin) login();
-                    else { alert("Wrong PIN"); currentPinAttempt = ""; updateDots(); }
+                    else { 
+                        alert("Invalid Security Key"); 
+                        currentPinAttempt = ""; 
+                        updateDots(); 
+                    }
                 }
             }
         }
 
         function updateDots() {
-            pinDots.forEach((d, i) => d.className = i < currentPinAttempt.length ? "pin-dot w-4 h-4 rounded-full bg-pink-500 scale-125 shadow-lg" : "pin-dot w-4 h-4 rounded-full bg-rose-900");
+            pinDots.forEach((d, i) => d.className = i < currentPinAttempt.length ? 
+                "pin-dot w-4 h-4 rounded-full bg-pink-500 scale-125 shadow-[0_0_15px_rgba(236,72,153,1)]" : 
+                "pin-dot w-4 h-4 rounded-full bg-rose-900");
         }
 
         function login() {
             document.getElementById('login-view').classList.add('hidden');
             document.getElementById('dashboard-view').classList.remove('hidden');
+            initProfile();
             render();
         }
 
         function logout() { location.reload(); }
 
-        // --- CORE LOGIC ---
+        // --- UI & DATA RENDERER ---
+        function initProfile() {
+            const pic = vault.profilePic || 'https://api.dicebear.com/7.x/bottts/svg?seed=Biya';
+            document.getElementById('header-pic').innerHTML = `<img src="${pic}" class="w-full h-full object-cover">`;
+            document.getElementById('login-profile-pic').innerHTML = `<img src="${pic}" class="w-full h-full object-cover">`;
+            document.getElementById('settings-pic-preview').innerHTML = `<img src="${pic}" class="w-full h-full object-cover">`;
+            document.getElementById('user-name-display').innerText = vault.userName;
+            document.getElementById('config-name').value = vault.userName;
+            document.getElementById('config-pic-url').value = vault.profilePic;
+        }
+
+        function formatPKR(val) {
+            return "Rs. " + val.toLocaleString('en-PK');
+        }
+
         function render() {
             const total = vault.banks.reduce((acc, b) => acc + b.balance, 0);
-            document.getElementById('total-balance').innerText = `$${total.toLocaleString()}`;
+            const totalIn = vault.transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
+            const totalOut = vault.transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
             
-            // Render Banks
+            document.getElementById('total-balance').innerText = formatPKR(total);
+            document.getElementById('total-in').innerText = formatPKR(totalIn);
+            document.getElementById('total-out').innerText = formatPKR(totalOut);
+            
+            // Banking List
             const bl = document.getElementById('bank-list');
             const bs = document.getElementById('tx-bank-select');
             bl.innerHTML = ""; bs.innerHTML = "";
-            
             vault.banks.forEach((b, i) => {
-                bl.innerHTML += `<div class="flex justify-between items-center bg-rose-950/40 p-3 rounded-xl border border-rose-800">
-                    <span class="text-sm font-bold text-pink-200">${b.name}</span>
-                    <span class="font-mono text-xs">$${b.balance.toLocaleString()}</span>
+                bl.innerHTML += `<div class="bg-rose-950/40 p-4 rounded-2xl border border-rose-800/50 flex justify-between items-center">
+                    <span class="text-xs font-bold text-pink-100">${b.name}</span>
+                    <span class="text-xs font-mono text-pink-300/80">${formatPKR(b.balance)}</span>
                 </div>`;
-                bs.innerHTML += `<option value="${i}">${b.name} ($${b.balance})</option>`;
+                bs.innerHTML += `<option value="${i}">${b.name}</option>`;
             });
 
-            // Render History
+            // Ledger Search/History
+            const query = document.getElementById('tx-search').value.toLowerCase();
             const hl = document.getElementById('tx-history');
-            hl.innerHTML = vault.transactions.length ? "" : "<p class='text-center text-xs text-rose-500 pt-10'>No history yet</p>";
-            vault.transactions.slice().reverse().forEach(t => {
-                const color = t.type === 'income' ? 'text-green-400' : 'text-red-400';
-                hl.innerHTML += `<div class="bg-rose-900/20 p-3 rounded-xl border border-rose-800 text-[11px]">
-                    <div class="flex justify-between font-bold"><span>${t.desc}</span><span class="${color}">${t.type === 'income' ? '+' : '-'}$${t.amount}</span></div>
-                    <div class="flex justify-between text-[9px] opacity-50 mt-1"><span>${t.bank}</span><span>${t.date}</span></div>
+            hl.innerHTML = "";
+            
+            const filtered = vault.transactions.slice().reverse().filter(t => 
+                t.desc.toLowerCase().includes(query) || t.bank.toLowerCase().includes(query)
+            );
+
+            if (!filtered.length) {
+                hl.innerHTML = `<div class="text-center py-20 opacity-20 text-xs">No records found</div>`;
+            }
+
+            filtered.forEach(t => {
+                const isInc = t.type === 'income';
+                hl.innerHTML += `
+                <div class="bg-rose-900/10 p-4 rounded-2xl border border-rose-800/40 hover:border-pink-500/20 transition-all group">
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="text-xs font-bold truncate pr-4">${t.desc}</span>
+                        <span class="text-xs font-black ${isInc ? 'text-green-400' : 'text-rose-400'}">${isInc ? '+' : '-'}${formatPKR(t.amount)}</span>
+                    </div>
+                    <div class="flex justify-between text-[9px] font-bold opacity-40 uppercase tracking-tighter">
+                        <span>${t.bank}</span>
+                        <span>${t.date}</span>
+                    </div>
                 </div>`;
             });
 
             document.getElementById('secure-notes').value = vault.notes;
-            localStorage.setItem('biya_vault_v3', JSON.stringify(vault));
+            localStorage.setItem('biya_titanium_vault', JSON.stringify(vault));
         }
 
+        // --- FUNCTIONALITY ---
         function addBank() {
-            const name = prompt("Enter Bank Name:");
-            const bal = parseFloat(prompt("Initial Balance:"));
+            const name = prompt("Bank Name (e.g. HBL, JazzCash):");
+            const bal = parseFloat(prompt("Current Balance in Rs:"));
             if (name && !isNaN(bal)) {
                 vault.banks.push({ name, balance: bal });
                 render();
@@ -184,20 +257,22 @@
         }
 
         function processTx(type) {
-            const desc = document.getElementById('tx-desc').value;
+            const desc = document.getElementById('tx-desc').value.trim();
             const amt = parseFloat(document.getElementById('tx-amount').value);
-            const bankIdx = document.getElementById('tx-bank-select').value;
+            const bIdx = document.getElementById('tx-bank-select').value;
 
-            if (!desc || isNaN(amt) || bankIdx === "") return;
+            if (!desc || isNaN(amt) || amt <= 0) return alert("Enter valid details");
 
-            if (type === 'income') vault.banks[bankIdx].balance += amt;
-            else {
-                if (vault.banks[bankIdx].balance < amt) return alert("Insufficient Funds in this bank!");
-                vault.banks[bankIdx].balance -= amt;
+            if (type === 'income') {
+                vault.banks[bIdx].balance += amt;
+            } else {
+                if (vault.banks[bIdx].balance < amt) return alert("Insufficient Bank Balance");
+                vault.banks[bIdx].balance -= amt;
             }
 
             vault.transactions.push({
-                desc, amount: amt, type, bank: vault.banks[bankIdx].name, date: new Date().toLocaleDateString()
+                desc, amount: amt, type, bank: vault.banks[bIdx].name,
+                date: new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short' })
             });
 
             document.getElementById('tx-desc').value = "";
@@ -205,30 +280,36 @@
             render();
         }
 
-        function saveNotes() { vault.notes = document.getElementById('secure-notes').value; localStorage.setItem('biya_vault_v3', JSON.stringify(vault)); }
+        function saveSettings() {
+            const newName = document.getElementById('config-name').value.trim();
+            const newPic = document.getElementById('config-pic-url').value.trim();
+            const newPin = document.getElementById('new-pin').value.trim();
 
-        function showSection(s) {
-            document.getElementById('settings-view').className = s === 'settings' ? 'fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50' : 'hidden';
+            if (newName) vault.userName = newName;
+            vault.profilePic = newPic;
+            if (newPin.length === 4) vault.pin = newPin;
+
+            initProfile();
+            render();
+            hideModal('settings-modal');
         }
 
-        function updatePin() {
-            const np = document.getElementById('new-pin').value;
-            if (np.length === 4) {
-                vault.pin = np;
-                alert("PIN Updated Successfully!");
-                showSection('dashboard');
-                localStorage.setItem('biya_vault_v3', JSON.stringify(vault));
-            } else alert("PIN must be 4 digits");
+        function saveNotes() { 
+            vault.notes = document.getElementById('secure-notes').value; 
+            localStorage.setItem('biya_titanium_vault', JSON.stringify(vault)); 
         }
 
-        function clearAll() { if(confirm("Wipe everything?")) { localStorage.removeItem('biya_vault_v3'); location.reload(); } }
+        function showModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function hideModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-        // Generate Keypad
+        function clearAll() { if(confirm("System Wipe: All records will be erased. Proceed?")) { localStorage.removeItem('biya_titanium_vault'); location.reload(); } }
+
+        // --- KEYPAD GENERATOR ---
         const kp = document.getElementById('keypad');
         [1,2,3,4,5,6,7,8,9,0].forEach(n => {
             const b = document.createElement('button');
             b.innerText = n;
-            b.className = "h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 transition-all active:scale-90";
+            b.className = "h-16 rounded-3xl bg-rose-900/40 text-2xl font-bold border border-rose-800 hover:bg-pink-600 transition-all active:scale-90 shadow-xl";
             b.onclick = () => pressKey(n);
             kp.appendChild(b);
         });
