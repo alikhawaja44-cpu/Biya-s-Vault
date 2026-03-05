@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biya’s Vault | Secure Access</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #4c0519; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { Lock, LogOut, Wallet, ArrowLeft, Heart } = lucide;
+
+        // Firebase Configuration Placeholder
+        // Replace with your actual Firebase config details
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const BiyasVault = () => {
+            const [pin, setPin] = useState("");
+            const [isAuthenticated, setIsAuthenticated] = useState(false);
+            const [balance, setBalance] = useState(2500);
+
+            const handleKeyPress = (num) => {
+                if (pin.length < 4) setPin(prev => prev + num);
+            };
+
+            const handleDelete = () => {
+                setPin(prev => prev.slice(0, -1));
+            };
+
+            useEffect(() => {
+                if (pin.length === 4) {
+                    // Current Logic: Check PIN 2024
+                    if (pin === "2024") { 
+                        setIsAuthenticated(true);
+                    } else {
+                        alert("Access Denied");
+                        setPin("");
+                    }
+                }
+            }, [pin]);
+
+            const handleLogout = () => {
+                setIsAuthenticated(false);
+                setPin("");
+            };
+
+            if (isAuthenticated) {
+                return (
+                    <div className="min-h-screen bg-rose-950 flex flex-col items-center justify-center p-4 text-white">
+                        <div className="w-full max-w-sm bg-rose-900/40 rounded-3xl p-8 border border-pink-500/30 shadow-2xl backdrop-blur-sm">
+                            <div className="flex justify-between items-start mb-8">
+                                <div>
+                                    <p className="text-pink-200/70 text-sm">Welcome back, Biya</p>
+                                    <h2 className="text-2xl font-bold">Safe Deposit</h2>
+                                </div>
+                                <button onClick={handleLogout} className="p-2 bg-rose-800/50 rounded-full hover:bg-pink-600 transition-colors">
+                                    <i data-lucide="log-out" className="text-pink-100 w-5 h-5"></i>
+                                </button>
+                            </div>
+
+                            <div className="bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl p-6 mb-6 shadow-lg shadow-pink-500/20">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <i data-lucide="wallet" className="w-4 h-4 text-pink-100"></i>
+                                    <span className="text-pink-100 text-sm font-medium">Vault Balance</span>
+                                </div>
+                                <h1 className="text-4xl font-bold">${balance.toLocaleString()}</h1>
+                            </div>
+
+                            <div className="space-y-3">
+                                <button className="w-full py-4 bg-white/10 rounded-xl font-bold hover:bg-white/20 transition-all">Withdraw</button>
+                                <button onClick={() => setBalance(b => b + 100)} className="w-full py-4 bg-pink-500 rounded-xl font-bold hover:bg-pink-400 transition-all shadow-md">Add Funds</button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen bg-rose-950 flex flex-col items-center justify-center p-4 text-white">
+                    <div className="mb-8 text-center">
+                        <div className="w-16 h-16 bg-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-pink-500/30">
+                            <i data-lucide="heart" fill="white" className="w-8 h-8"></i>
+                        </div>
+                        <h1 className="text-3xl font-extrabold tracking-tight">Biya’s Vault</h1>
+                        <p className="text-pink-200/60 text-sm mt-2 font-medium">Secure Access Terminal</p>
+                    </div>
+
+                    <div className="flex gap-4 mb-10">
+                        {[0, 1, 2, 3].map((i) => (
+                            <div key={i} className={`w-4 h-4 rounded-full transition-all duration-300 border ${i < pin.length ? "bg-pink-400 border-pink-300 scale-125 shadow-[0_0_15px_rgba(244,114,182,0.8)]" : "bg-rose-900 border-rose-800"}`} />
+                        ))}
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-4 max-w-xs w-full">
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
+                            <button key={num} onClick={() => handleKeyPress(num)} className="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 hover:border-pink-400 active:scale-90 transition-all">
+                                {num}
+                            </button>
+                        ))}
+                        <button onClick={handleDelete} className="h-16 rounded-2xl flex items-center justify-center text-pink-300 hover:text-white transition-all">
+                            <i data-lucide="arrow-left" className="w-6 h-6"></i>
+                        </button>
+                        <button onClick={() => handleKeyPress(0)} className="h-16 rounded-2xl bg-rose-900/60 text-2xl font-bold border border-rose-800 hover:bg-pink-500 hover:border-pink-400 active:scale-90 transition-all">0</button>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<BiyasVault />);
+
+        // Initialize icons after React renders
+        setTimeout(() => lucide.createIcons(), 100);
+    </script>
+</body>
+</html>
